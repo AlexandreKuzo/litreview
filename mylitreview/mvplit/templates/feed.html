@@ -1,0 +1,81 @@
+<!-- templates/feed.html -->
+{% extends 'bulma/base.html' %}
+{% load bulma_tags i18n %}
+{% load humanize %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <div class="content">
+        <div class="field has-text-centered">
+            <h1>Feed.</h1>
+        </div>
+    </div>
+    <div class="content">
+            <div class="buttons is-centered">
+                <a class="button is-primary"href="/mvplit/create">Demander une critique</a>
+                <a class="button is-link"href="/mvplit/critic">Créer une critique</a>
+            </div>        
+    </div>
+    {% for ticket in tickets %}
+        <div class="card">
+            <div class="card-content">
+                <div class="content">
+                    {% if user.is_authenticated and user == ticket.user %}
+                    <p>Vous avez créé un ticket :</p>
+                    {% else %}
+                    <p><strong>{{ ticket.user }}</strong> a créé un ticket :</p>
+                    {% endif %}
+                </div>
+                <div class="content">
+                    {{ ticket.titre }} <br>
+                    {{ ticket.description}} <br>
+                    <p><img src="{{ ticket.image.url }}" alt=""></p>
+                </div>
+                
+                <div class="content">
+                <div class="buttons">
+                   
+                    <a class="button is-black" href="{% url 'ticket_detail' ticket.id %}">Voir/Commenter</a>
+                    {% if user.is_authenticated and user == ticket.user %}
+                    <a class="button is-dark" href="{% url 'update' pk=ticket.pk %}">Mettre à jour ?</a>
+                    <a class="button is-danger" href="{% url 'delete' pk=ticket.pk %}">Effacer</a>
+                    {% endif %}
+                </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for auto_review in auto_reviews %}
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                {% if user.is_authenticated and user == auto_review.user %}
+                <p>Vous avez publié une critique :</p>
+                {% else %}
+                <p><strong>{{ auto_review.user }}</strong> a publié une critique :</p>
+                {% endif %}
+            </div>
+            <div class="content">
+                {{ auto_review.headline }} <br>
+                {{ auto_review.description }}
+            </div>
+            <div class="content">
+                <strong>{{ auto_review.titre }}</strong><br>                
+                <strong>{{ auto_review.rating }} étoiles</strong> <br>
+                {{ auto_review.body }}
+            </div>
+            <div class="content">
+                <p><img src="{{ auto_review.image.url }}" alt=""></p>  
+            </div>
+            <div class="content">
+                <a class="button is-black" href="{% url 'auto_review_detail' auto_review.id %}">Voir/Commenter</a>
+                {% if user.is_authenticated and user == auto_review.user %}
+                <a class="button is-dark" href="{% url 'update' pk=auto_review.pk %}">Mettre à jour</a>
+                <a class="button is-danger" href="{% url 'delete' pk=auto_review.pk %}">Effacer</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

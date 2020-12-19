@@ -1,0 +1,28 @@
+<!-- templates/auto_review_confirm_delete.html -->
+{% extends 'bulma/base.html' %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<div class="content">
+    <div class="field has-text-centered">
+        <h1>Mes critiques.</h1>
+    </div>
+    
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <h2>Êtes-vous sûr de vouloir supprimer cette critique : "{{ auto_review.headline }}" ?</h2>
+            </div>
+            <div class="content">
+                <form method="POST" action="">
+			    {% csrf_token %}
+                    <div class="control">
+                    <button class="button is-danger" type="submit">Supprimer</button>
+                    </div>
+	            </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

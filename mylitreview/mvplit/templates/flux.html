@@ -1,0 +1,39 @@
+<!-- templates/mytickets.html -->
+{% extends 'bulma/base.html' %}
+{% load bulma_tags i18n %}
+{% load humanize %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="content">
+    <div class="field has-text-centered">
+        <h1>Feed.</h1>
+    </div>
+    {% for ticket in tickets %}
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <p><strong>{{ ticket.user }}</strong> a créé un ticket :</p>
+            </div>
+            <div class="content">
+                {{ ticket.titre }} <br>
+                {{ ticket.description}} <br>
+                <p><img src="{{ ticket.image.url }}" alt=""></p>
+            </div>
+            
+            <div class="content">
+            <div class="buttons">
+               
+                <a class="button is-black" href="{% url 'ticket_detail' ticket.id %}">Voir/Commenter</a>
+                {% if user.is_authenticated and user == ticket.user %}
+                <a class="button is-dark" href="{% url 'update' pk=ticket.pk %}">Mettre à jour ?</a>
+                <a class="button is-danger" href="{% url 'delete' pk=ticket.pk %}">Effacer</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock %}

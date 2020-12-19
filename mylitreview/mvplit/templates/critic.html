@@ -1,0 +1,26 @@
+<!--templates/critic.html-->
+{% extends 'bulma/base.html' %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+{% if sauvegarde %}
+    <p>Critique bien enregistrée !</p>
+	{% else %}
+
+<div class="content">
+    <div class="field has-text-centered">
+        <h1>Créer une critique.</h1>
+    </div>
+    <div class="field">
+        <form action="{% url 'critic' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|bulma }}
+        <div class="control">
+            <button class="button is-black" type="submit">Envoyer</button>
+        </div>    
+        </form>
+
+    </div>
+</div>
+{% endif %}
+{% endblock %}

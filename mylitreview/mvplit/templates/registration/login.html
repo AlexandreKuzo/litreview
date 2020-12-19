@@ -1,0 +1,23 @@
+{% extends 'bulma/base.html' %}
+{% load bulma_tags %}
+<head>
+    <!-- ... -->
+   
+    <!-- ... -->
+</head>
+
+<!-- templates/registration/login.html -->
+{% block content %}
+<form method="post">
+{% csrf_token %}
+{{ form|bulma }}
+<button class="button is-info" type="submit">Connexion</button>
+<div class="field is-horizontal">
+   <p><a href="/mvplit/password_reset">Mot de passe oublié ?</a></p>
+</div>
+</form>
+
+<div class="field is-horizontal">
+    <p><a href="{% url 'signup' %}">Vous n'avez pas de compte ?</a></p>
+ </div>
+{% endblock %}

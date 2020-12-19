@@ -1,0 +1,27 @@
+<!-- templates/home.html -->
+{% extends 'bulma/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+   <div class="columns">
+       <div class="column">
+           <div class="content">
+               <h1>Inscrivez-vous maintenant</h1>
+           </div>
+           <div class="content">
+               <a class="button is-link" href="{% url 'signup' %}">S'inscrire</a>
+           </div>
+       </div>
+       <div class="column">
+           <div class="content">
+               <h1>Connectez-vous</h1>
+           </div>
+           <div class="content">
+               <a class="button is-dark" href="{% url 'login' %}">Se connecter</a>
+           </div>
+       </div>
+   </div> 
+{% endblock %}
+

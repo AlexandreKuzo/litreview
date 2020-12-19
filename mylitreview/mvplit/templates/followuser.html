@@ -1,0 +1,58 @@
+<!--templates/followuser.html-->
+{% extends 'base.html' %}
+{% load bulma_tags %}
+
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="content">
+    <div class="field has-text-centered">
+        <h1>Membres.</h1>
+    </div>
+    <form action="{% url 'followusers' %}" method="GET">
+        <nav class="level">
+            <div class="level-left">               
+                <div class="level-item">
+                    <input class="input" name="q" type="text" placeholder="Recherche...">
+                </div>    
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <button class="button is-link" type="submit">Rechercher</button>
+                </div>
+            </div>
+        </nav><br>
+    </form>
+    {% for user in object_list %}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p>{{ user.username }}</p>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">   
+                <form action="{% url 'change_friends' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="control">
+                        <button class="button is-link" type="submit">Suivre</button>
+                    </div>
+                </form>
+            </div> 
+            <div class="level-item">
+                <form action="{% url 'lose_friends' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="control">
+                        <button class="button is-danger" type="submit">Retirer</button>
+                    </div>
+                </form>
+            </div>                
+            </div>
+        </div>
+    </nav>
+    <br>
+    {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

@@ -1,0 +1,60 @@
+<!-- templates/ticket_detail.html -->
+{% extends 'bulma/base.html' %}
+{% load bulma_tags i18n %}
+{% load humanize %}
+
+{% block content%}
+<div class="card">
+    <div class="card-content">
+        <div class="field">
+            <p><strong>Vous êtes en train de poster en réponse à </strong></p>
+        </div>    
+        <div class="content">
+            <p>{{ ticket.user }} a demandé une critique</p>
+        </div>
+    </div>
+</div>
+
+<div class="card"> 
+    <div class="card-content">     
+        <div class="content">
+            <p>{{ ticket.titre }}</p>
+            <p>{{ ticket.description }}</p>
+        </div>
+        <div>
+            <p><img src="{{ ticket.image.url }}" alt=""></p>
+        </div>
+    </div>
+    <div class="card-content">
+        <div class="content">
+            {% if reviews %}
+            {% with reviews.count as total_reviews %}
+            {% if reviews.count < 1 %}
+            {{ total_reviews }} critique
+            {% else %}
+            {{ total_reviews }} critiques
+            {% endif %}
+            {% endwith %}
+            {% endif %}
+        </div>
+        {% for review in reviews %}
+        <div class="content">
+            <p>{{ review.rating }} étoiles - par {{ review.user }} - {{ review.time_created|naturaltime }}</p>
+            <p>{{ review.body }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="card-content">
+        <div class="field">
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ review_form|bulma }}
+                <div class="control">
+                    <button class="button is-dark">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

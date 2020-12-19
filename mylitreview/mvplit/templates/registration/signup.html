@@ -1,0 +1,19 @@
+{% extends 'bulma/base.html' %}
+{% load bulma_tags %}
+<head>
+    <!-- ... -->
+   
+    <!-- ... -->
+</head>
+
+<!-- templates/registration/signup.html -->
+{% block content %}
+<form method="post">
+{% csrf_token %}
+{{ form|bulma }}
+<div class="buttons">
+    <a class="button is-light" href="{% url 'home' %}">Retour</a>
+    <a class="button is-black" type="submit">Inscription</a>
+</div>
+</form>
+{% endblock %}
