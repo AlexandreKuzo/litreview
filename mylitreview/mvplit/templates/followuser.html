@@ -23,36 +23,36 @@
             </div>
         </nav><br>
     </form>
-    {% for user in object_list %}
-    <nav class="level">
-        <div class="level-left">
-            <div class="level-item">
-                <p>{{ user.username }}</p>
-            </div>
-        </div>
-        <div class="level-right">
-            <div class="level-item">   
-                <form action="{% url 'change_friends' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="control">
-                        <button class="button is-link" type="submit">Suivre</button>
-                    </div>
-                </form>
-            </div> 
-            <div class="level-item">
-                <form action="{% url 'lose_friends' %}" method="POST">
-                    {% csrf_token %}
-                    <div class="control">
-                        <button class="button is-danger" type="submit">Retirer</button>
-                    </div>
-                </form>
-            </div>                
-            </div>
-        </div>
-    </nav>
-    <br>
-    {% endfor %}
 </div>
+<div class="content">
+    <div class="field has-text-centered">
+        <table class="table is-bordered has-text-centered">
+            {% for profile in object_list %}
+            <tr>
+                <th>{{ profile.username }}</th>
+                <th>
+                    <form method="POST"  action="{% url 'follow' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="profile_id" value="{{ profile.id }}">
+                    {% if user not in profile.followed.all %}
+                    <div class="control">
+                    <button class="button is-info" type="submit">Suivre</button>
+                    </div>
+                    {% else %}
+                    <div class="control">
+                    <button class="button is-danger" type="submit">Désabonnement</button>
+                    </div>
+            
+                    {% endif %}
+                    </form>
+            </th>
+            </tr>
 
+            {% endfor %}
+        </table>
+    </div>
+</div>
+    
+</div>
 {% endif %}
 {% endblock %}

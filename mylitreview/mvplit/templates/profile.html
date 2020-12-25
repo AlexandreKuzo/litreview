@@ -1,0 +1,32 @@
+<!--templates/profile.html-->
+{% extends 'base.html' %}
+{% load bulma_tags %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="content">
+    <div class="field has-text-centered">
+        <h1>Profil de {{ profile.id }}.</h1>
+    </div>
+<div class="content">
+    <form method="POST"  action="{% url 'follow' %}">
+        {% csrf_token %}
+        <input type="hidden" name="profile_id" value="{{ profile.id }}">
+        {% if user not in profile.followed.all %}
+        <div class="control">
+        <button class="button is-info" type="submit">Suivre</button>
+        </div>
+        {% else %}
+        <div class="control">
+        <button class="button is-danger" type="submit">Désabonnement</button>
+        </div>
+
+        {% endif %}
+        
+    </form>
+        
+    </div>
+</div>    
+</div>
+{% endif %}
+{% endblock %}

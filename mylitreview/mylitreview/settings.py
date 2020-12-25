@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'bulma',
+    'mvplit',
     
 
     # Local
-    'mvplit.apps.MvplitConfig',
 
 ]
 
@@ -125,7 +125,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-AUTH_USER_MODEL = 'mvplit.CustomUser'
 
 # Media / Images
 MEDIA_URL = '/media/'

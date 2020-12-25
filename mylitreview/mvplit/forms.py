@@ -1,30 +1,27 @@
 from django import forms
 from django.db import models
 from django.conf import settings
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms import RadioSelect
+from django.contrib.auth.models import User
 from django.forms.models import ModelChoiceField
 from django.core.validators import MinValueValidator, MaxValueValidator
-from .models import CustomUser, Ticket, Review, AutoReview, CriticAutoReview
+from .models import Ticket, Review, AutoReview, CriticAutoReview, Profile
 
 CHOICES = [(i,i) for i in range(6)]
+FOLLOW_CHOICES=(
+	("Suivi", "Suivi"),
+	("Suivre", "Suivre"),
+	)
 
-class CustomUserCreationForm(UserCreationForm):
+class UserForm(forms.ModelForm):
+	class Meta:
+		model = User
+		fields = ('username', 'email')
 
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'email')
-        labels = {
-            "username": "Pseudo",
-            "email": "E-mail"
-        }
-
-
-class CustomUserChangeForm(UserChangeForm):
-
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'email')
+class ProfileForm(forms.ModelForm):
+	class Meta:
+		model = Profile
+		fields = ('bio', 'lieu', 'date_naissance', 'avatar')
 
 class CreateForm(forms.Form):
     titre = forms.CharField(label="Titre", max_length=200)
@@ -75,6 +72,8 @@ class CriticAutoReviewForm(forms.ModelForm):
         widgets = {
             'rating': RadioSelect(choices=CHOICES),
         }
+
+    
 
 
 

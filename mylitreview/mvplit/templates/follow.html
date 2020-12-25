@@ -1,0 +1,26 @@
+<!--templates/follow.html-->
+{% extends 'base.html' %}
+{% load bulma_tags%}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="content">
+    {{ follow.username }}
+</div>
+<div class="content">
+    <form method="POST"  action="">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user.id }}">
+        {% if user not in user_obj.all %}
+        <div class="control">
+        <button class="button is-info" type="submit">Suivre</button>
+        </div>
+        {% else %}
+        <div class="control">
+        <button class="button is-danger" type="submit">Ne plus suivre</button>
+        </div>
+
+        {% endif %}
+</div>
+{% endif %}
+{% endblock %}

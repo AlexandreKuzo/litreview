@@ -1,25 +1,54 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from itertools import chain
 from django.urls import reverse
+from django.views import generic
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import CharField, Value, Q
 from django.views.generic import UpdateView, TemplateView, ListView
 from django.views.generic.edit import CreateView, DeleteView, FormView
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
-from .models import AbstractUser, Ticket, Review, CustomUser, AutoReview, Friend
-from .forms import AutoReviewForm, CriticAutoReviewForm
+from django.contrib.auth.forms import UserCreationForm
+from .models import Ticket, Review, AutoReview, Profile, Follow
+from .forms import UserForm, ProfileForm, AutoReviewForm, CriticAutoReviewForm
 
 
 # Create your views here.
 
-from .forms import CustomUserCreationForm, CreateForm, ReviewForm
+from .forms import CreateForm, ReviewForm
 
-class SignUpView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy
+class SignUpView(generic.CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
+
+
+@login_required
+def update_profile(request):
+	try:
+		profile = request.user.profile
+	except Profile.DoesNotExist:
+		profile = Profile(user=request.user)
+	if request.method == "POST":
+		user_form = UserForm(request.POST, instance=request.user)
+		profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+		if user_form.is_valid() and profile_form.is_valid():
+			user_form.save()
+			profile_form.save()
+			messages.success(request, ('Profil bien renseigné et enregistré !'))
+			return render(request, 'update_profile.html', {"user_form": user_form, "profile_form": profile_form })
+		else:
+			messages.error(request, ('Woops, il y a l\'air d\'y avoir une erreur !'))
+
+	else:
+		user_form = UserForm(instance=request.user)
+		profile_form = ProfileForm(instance=request.user.profile)
+
+	return render(request, 'update_profile.html', {"user_form": user_form, "profile_form": profile_form })
+
 
 def create(request):
     form = CreateForm(request.POST, request.FILES or None)
@@ -176,38 +205,47 @@ def critic(request):
     })
 
 class SearchView(ListView):
-    model = CustomUser
+    model = User
     template_name = 'followuser.html'
 
     def get_queryset(self):
         query = self.request.GET.get('q', '')
-        object_list = CustomUser.objects.filter(
+        object_list = User.objects.filter(
             Q(username__icontains=query)
         )        
         return object_list
-
-def follow_users(request):
-    return redirect('followuser.html')
+    
+    
 
 def feed(request):
     tickets = Ticket.objects.filter()
     auto_reviews = AutoReview.objects.filter()
     return render(request, 'feed.html', {'tickets':tickets, 'auto_reviews':auto_reviews })
 
-def change_friends(request):    
-    username = request.user.username
-    friend = CustomUser.objects.get(username=username)
+def follow(request):
+    template_name = "followuser.html"
+    user = request.user
     if request.method == "POST":
-        Friend.make_friend(request.user, friend)
-    return render(request, 'followuser.html', {
-        'friend':friend, 
-    })
+        profile_id = request.POST.get('profile_id')
+        profile_obj = Profile.objects.get(id=profile_id)
 
-def lose_friends(request):
-    username = request.user.username
-    friend = CustomUser.objects.get(username=username)
-    if request.method == 'POST':
-        Friend.lose_friend(request.user, friend)
-    return render(request, 'followuser.html', {
-        'friend':friend,
-    })
+        if user in profile_obj.followed.all():
+            profile_obj.followed.remove(user)
+        else:
+            profile_obj.followed.add(user)
+
+        follow, created = Follow.objects.get_or_create(user=user, profile_id=profile_id)
+
+        if not created:
+            if follow.value == 'follow':
+                follow.value = 'unfollow'
+            else:
+                follow.value = 'follow'
+        
+        follow.save()
+    return redirect('followusers')
+
+def profile(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    return render(request, 'profile.html')
+
