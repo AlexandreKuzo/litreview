@@ -29,7 +29,7 @@
         <div class="content">
             {% if reviews %}
             {% with reviews.count as total_reviews %}
-            {% if reviews.count < 1 %}
+            {% if reviews.count <= 1 %}
             {{ total_reviews }} critique
             {% else %}
             {{ total_reviews }} critiques

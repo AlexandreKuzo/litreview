@@ -29,7 +29,7 @@
         <div class="content">
             {% if critic_auto_reviews %}
             {% with critic_auto_reviews.count as total_critic_auto_reviews %}
-            {% if critic_auto_reviews.count < 1 %}
+            {% if critic_auto_reviews.count <= 1 %}
             {{ total_critic_auto_reviews }} commentaire
             {% else %}
             {{ total_critic_auto_reviews }} commentaires

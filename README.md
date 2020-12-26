@@ -14,13 +14,19 @@ Un structure d'application Django ; le projet ``mylitreview`` contient le projet
 
 Etape 1: clonez le projet.
 
-Etape 2: naviguez dans le dossier tout juste avec la commande ``cd litreview`` puis installez un environnement virtuel (avec pipenv, ou avec venv et pip).
+Etape 2: naviguez dans le dossier tout juste avec la commande ``cd litreview`` puis installez dans le répertoire un environnement virtuel (avec [pipenv](https://docs.python-guide.org/dev/virtualenvs/), ou avec [venv et pip](https://docs.python.org/fr/3/library/venv.html)).
 
-Etape 3: activez l'environnement virtuel ()
+Etape 3: activez l'environnement virtuel avec la commande appropriée. 
 
-Etape XX : en cours de rédaction
+Etape 4 : installez Django sur votre machine avec la commande ``python -m pip install django``
+
+Etpage 5 : accédez au répertoire ``mylitreview`` avec la commande ``cd mylitreview``, et installez les migrations avec la commande ``python manage.py makemigrations``puis ``python manage.py migrate``
 
 ## Executer le projet en local
+
+Pour lancer le projet en local, cela se fait depuis le répertoire ``mylitreview`` avec ``cd mylitreview`` ; ensuite tapez la commande ``python manage.py runserver``
+Vous pourrez accéder au projet en tapant l'adresse web ``localhost:8000``
+
 
 
 ## Auteur
