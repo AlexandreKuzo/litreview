@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'bulma',
     'mvplit',
     
-
     # Local
 
 ]

@@ -248,4 +248,3 @@ def follow(request):
 def profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     return render(request, 'profile.html')
-

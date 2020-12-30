@@ -1,11 +1,11 @@
 from django.urls import path
-from django.conf.urls import include, url
+from django.conf.urls import url
 from .views import SignUpView, TicketUpdate, TicketDelete, SearchView, AutoReviewUpdate, AutoReviewDelete
 
 from . import views
 
-urlpatterns =[  
-   path('signup', SignUpView.as_view(), name='signup'), 
+urlpatterns =[
+   path('signup', SignUpView.as_view(), name='signup'),
    path('update_profile', views.update_profile, name='update_profile'),
    url('create/', views.create, name='create'),
    url('review/', views.review, name='review'),

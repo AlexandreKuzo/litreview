@@ -18,9 +18,7 @@ Etape 2: naviguez dans le dossier tout juste avec la commande ``cd litreview`` p
 
 Etape 3: activez l'environnement virtuel avec la commande appropriée. 
 
-Etape 4 : installez Django sur votre machine avec la commande ``python -m pip install django``
-
-Etpage 5 : accédez au répertoire ``mylitreview`` avec la commande ``cd mylitreview``, et installez les migrations avec la commande ``python manage.py makemigrations``puis ``python manage.py migrate``
+Etape 4 : installez au projet les packages requis ; ceux-ci sont fournis dans le fichier ``requirements.txt`` La commande suivante le fera : ``pip install -r requirements.txt``
 
 ## Executer le projet en local
 

@@ -3,8 +3,6 @@ from django.db import models
 from django.conf import settings
 from django.forms import RadioSelect
 from django.contrib.auth.models import User
-from django.forms.models import ModelChoiceField
-from django.core.validators import MinValueValidator, MaxValueValidator
 from .models import Ticket, Review, AutoReview, CriticAutoReview, Profile
 
 CHOICES = [(i,i) for i in range(6)]
@@ -72,10 +70,3 @@ class CriticAutoReviewForm(forms.ModelForm):
         widgets = {
             'rating': RadioSelect(choices=CHOICES),
         }
-
-    
-
-
-
-
-
